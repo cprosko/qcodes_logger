@@ -1,3 +1,6 @@
 # Ignore package testing notebook
 package_testing.ipynb
 .ipynb_checkpoints/*
+
+# Ignore any qcodes database files in gitignore
+*.db
