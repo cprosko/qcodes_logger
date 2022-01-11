@@ -1,3 +1,3 @@
 # Ignore package testing notebook
 package_testing.ipynb
-package_testing-checkpoint.ipynb
+.ipynb_checkpoints/*
