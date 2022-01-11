@@ -4,3 +4,5 @@ package_testing.ipynb
 
 # Ignore any qcodes database files in gitignore
 *.db
+*.db-shm
+*.db-wal
