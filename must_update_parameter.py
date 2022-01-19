@@ -1,4 +1,5 @@
 from qcodes import Parameter
+from qcodes.utils.validators import Strings
 
 
 class MustUpdateParameter(Parameter):
@@ -48,3 +49,13 @@ class MustUpdateParameter(Parameter):
         self._latest_value_read = False
         self._value = val
         return self._value
+
+
+class MeasurementDescription(MustUpdateParameter):
+    def __init__(self, name, **kwargs):
+        super().__init__(name, vals=Strings(), new_value_must_differ=True, **kwargs)
+        self.__doc__ = (
+            "A string description of the current measurement. "
+            "Contains a checker which asserts that this parameter "
+            "is changed between every measurement run."
+        )
