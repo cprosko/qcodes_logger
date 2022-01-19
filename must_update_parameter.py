@@ -1,5 +1,7 @@
-from qcodes import Parameter
+from qcodes import Parameter, Station
 from qcodes.utils.validators import Strings
+from collections.abc import Sequence
+from typing import Optional
 
 
 class MustUpdateParameter(Parameter):
@@ -23,7 +25,9 @@ class MustUpdateParameter(Parameter):
     since the last measurement, set MustUpdateParameter._latest_value_in_measurement to False.
     """
 
-    def __init__(self, name, new_value_must_differ=True, **kwargs):
+    def __init__(
+        self, name: str, new_value_must_differ: Optional[bool] = True, **kwargs
+    ):
         super().__init__(name, **kwargs)
         self._latest_value_in_measurement = False
         self._latest_value_read = False
@@ -52,10 +56,34 @@ class MustUpdateParameter(Parameter):
 
 
 class MeasurementDescription(MustUpdateParameter):
-    def __init__(self, name, **kwargs):
+    def __init__(self, name: str, **kwargs):
         super().__init__(name, vals=Strings(), new_value_must_differ=True, **kwargs)
         self.__doc__ = (
             "A string description of the current measurement. "
             "Contains a checker which asserts that this parameter "
             "is changed between every measurement run."
         )
+
+
+def check_parameters_updated(
+    params: Optional[Sequence[MustUpdateParameter]], verbose: Optional[bool] = True
+) -> None:
+    if params is None:
+        station = Station.default
+        params = [
+            station[c]
+            for c in station.components
+            if isinstance(station[c], MustUpdateParameter)
+        ]
+    if verbose:
+        print(params)
+    for param in params:
+        if param._latest_value_in_measurement:
+            raise Exception(
+                f"The latest value of {param.label}:\n"
+                f"{param()}{param.unit}\n"
+                f"has already been recorded in a previous measurement. Update the value of this "
+                "parameter and try again."
+            )
+        else:
+            param._latest_value_in_measurement = True
