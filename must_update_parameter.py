@@ -26,19 +26,30 @@ class MustUpdateParameter(Parameter):
     """
 
     def __init__(
-        self, name: str, new_value_must_differ: Optional[bool] = True, **kwargs
+        self,
+        name: str,
+        new_value_must_differ: Optional[bool] = True,
+        strict: bool = True,
+        **kwargs,
     ):
         super().__init__(name, **kwargs)
         self._latest_value_in_measurement = False
         self._latest_value_read = False
         self._new_value_must_differ = new_value_must_differ
         self._value = None
+        self.strict = strict
         if self.label is None:
             # TODO: Check if this is necessary or if Qcodes already handles it.
             self.label = name
 
     # you must provide a get method, a set method, or both.
     def get_raw(self):
+        if self._latest_value_read and self.strict:
+            raise Exception(
+                f"Current value of {self.name} has already been read, "
+                f"update to a new value or set {self.name}.strict = False "
+                "to disable this behavior."
+            )
         self._latest_value_read = True
         return self._value
 
@@ -80,10 +91,9 @@ def check_parameters_updated(
     for param in params:
         if param._latest_value_in_measurement:
             raise Exception(
-                f"The latest value of {param.label}:\n"
-                f"{param()}{param.unit}\n"
-                f"has already been recorded in a previous measurement. Update the value of this "
-                "parameter and try again."
+                f"The latest value of {param.label}: {param()}{param.unit} "
+                "has already been recorded in a previous measurement. Update "
+                "the value of this parameter and try again."
             )
         else:
             param._latest_value_in_measurement = True
