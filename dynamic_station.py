@@ -1,4 +1,5 @@
 from qcodes import Station, Parameter, Instrument
+from collections.abc import Sequence
 
 
 class DynamicStation(Station):
@@ -22,12 +23,15 @@ class DynamicStation(Station):
         super.__init__(**kwargs)
         self.set_component_configurations(component_configurations)
 
-    def set_component_configurations(self, component_configurations):
+    def set_component_configurations(
+        self, component_configurations: dict[Parameter | Instrument]
+    ) -> None:
         # TODO: Implement a validator of some sort for this function
         self._component_configurations = component_configurations
-        return
 
-    def adjust_station_to_meas_setup(self, config, verbose=True):
+    def adjust_station_to_meas_setup(
+        self, config: Sequence[str], verbose: bool = True
+    ) -> None:
         configs = self.component_configurations
         components_to_ensure = sum([configs[k] for k in config], [])
         components_to_remove = set(
