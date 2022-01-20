@@ -5,24 +5,32 @@ from typing import Optional
 
 
 class MustUpdateParameter(Parameter):
-    """A parameter which can be asserted that it must be changed between measurements,
-    provided measurement code runs 'check_parameters_updated' on it.
+    """Parameter which may be asserted that it must be changed after retrieval.
+
+    To assert that a MustUpdateParameter must be changed between measurements,
+    one must execute qcodes_logger.check_parameters_updated() at the beginning
+    of each measurement.
 
     Arguments:
     ----------
-    name (str): Name of the parameter
+    name (str): Name of the parameter.
 
     Keyword Arguments:
     ------------------
-    new_value_must_differ (bool): Whether or not each new set value must differ from the
-        previous set value. Attempting to set the parameter to the same value twice in
-        this case will raise an exception.
-    **kwargs: Keyword arguments to pass to the __init__ function of the qcodes.Parameter class.
+    new_value_must_differ (bool): Whether or not each new set value must differ
+        from the previous set value. Attempting to set the parameter to the same
+        value twice in this case will raise an exception.
+    strict (bool): Whether or not the parameter should be asserted that it must
+        be updated between each call to self.get(), instead of only between each
+        call of qcodes_logger.check_parameters_updated.
+    **kwargs: Keyword arguments to pass to the __init__ function of the
+        qcodes.Parameter class.
 
     Example usage:
     --------------
-    At the very beginning of any QCoDes measurement, to assert that this parameter was changed
-    since the last measurement, set MustUpdateParameter._latest_value_in_measurement to False.
+    At the very beginning of any QCoDes measurement, to assert that this
+    parameter was changed since the last measurement, set
+    MustUpdateParameter._latest_value_in_measurement to False.
     """
 
     def __init__(
