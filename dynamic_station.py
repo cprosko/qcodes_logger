@@ -24,8 +24,8 @@ class DynamicStation(Station):
         *components: Metadatable,
         component_configurations: dict[Parameter | Instrument] = None,
         **kwargs: Any,
-    ):
-        super.__init__(*components, **kwargs)
+    ) -> None:
+        super().__init__(*components, **kwargs)
         self.set_component_configurations(component_configurations)
 
     def set_component_configurations(
