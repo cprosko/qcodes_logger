@@ -3,9 +3,11 @@ package_testing.ipynb
 .ipynb_checkpoints/*
 test/*
 
-# Ignore any qcodes database files in gitignore
+# Ignore any qcodes database files
 *.db
 *.db-shm
 *.db-wal
+
+# Ignore miscellaneous files
 *.pyc
 *.DS_Store
