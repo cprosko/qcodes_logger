@@ -1,5 +1,7 @@
 from qcodes import Station, Parameter, Instrument
+from qcodes.utils.metadata import Metadatatable
 from collections.abc import Sequence
+from typing import Any
 
 
 class DynamicStation(Station):
@@ -18,9 +20,12 @@ class DynamicStation(Station):
     """
 
     def __init__(
-        self, component_configurations: dict[Parameter | Instrument] = None, **kwargs
+        self,
+        *components: Metadatatable,
+        component_configurations: dict[Parameter | Instrument] = None,
+        **kwargs: Any,
     ):
-        super.__init__(**kwargs)
+        super.__init__(*components, **kwargs)
         self.set_component_configurations(component_configurations)
 
     def set_component_configurations(
