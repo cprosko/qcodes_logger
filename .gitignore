@@ -7,3 +7,5 @@ test/*
 *.db
 *.db-shm
 *.db-wal
+*.pyc
+*.DS_Store
