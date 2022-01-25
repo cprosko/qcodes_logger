@@ -85,7 +85,8 @@ class MeasurementDescription(MustUpdateParameter):
 
 
 def check_parameters_updated(
-    params: Optional[Sequence[MustUpdateParameter]], verbose: Optional[bool] = True
+    params: Optional[Sequence[MustUpdateParameter]] = None,
+    verbose: Optional[bool] = True,
 ) -> None:
     if params is None:
         station = Station.default
