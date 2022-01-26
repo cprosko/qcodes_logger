@@ -1,7 +1,7 @@
 from qcodes import Parameter, Station
 from qcodes.utils.validators import Strings
 from collections.abc import Sequence
-from typing import Optional
+from typing import Optional, Any
 
 
 class MustUpdateParameter(Parameter):
@@ -23,7 +23,7 @@ class MustUpdateParameter(Parameter):
     strict (bool): Whether or not the parameter should be asserted that it must
         be updated between each call to self.get(), instead of only between each
         call of qcodes_logger.check_parameters_updated.
-    **kwargs: Keyword arguments to pass to the __init__ function of the
+    **kwargs (Any): Keyword arguments to pass to the __init__ function of the
         qcodes.Parameter class.
 
     Example usage:
@@ -38,8 +38,8 @@ class MustUpdateParameter(Parameter):
         name: str,
         new_value_must_differ: Optional[bool] = True,
         strict: bool = True,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         super().__init__(name, **kwargs)
         self._latest_value_in_measurement = False
         self._latest_value_read = False
@@ -75,7 +75,7 @@ class MustUpdateParameter(Parameter):
 
 
 class MeasurementDescription(MustUpdateParameter):
-    def __init__(self, name: str, **kwargs):
+    def __init__(self, name: str, **kwargs: Any) -> None:
         super().__init__(name, vals=Strings(), new_value_must_differ=True, **kwargs)
         self.__doc__ = (
             "A string description of the current measurement. "
