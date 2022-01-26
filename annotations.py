@@ -6,6 +6,7 @@ _ANNOTATION_KEY = "post_measurement_annotation"
 _ERROR_KEY = "errors_in_measurement"
 _PLOTTR_KEY = "inspectr_tag"
 _CROSS_KEY = "cross"
+_ADDITIONAL_ANNOTATION_KEY = "\nADDITIONAL ANNOTATION: \n"
 
 
 def annotate_runs(
@@ -87,7 +88,7 @@ def append_annotation(
         if _ANNOTATION_KEY in metadata:
             full_annotation += metadata[_ANNOTATION_KEY]
             if annotation is not None:
-                full_annotation += "\n ADDITIONAL ANNOTATION: \n"
+                full_annotation += _ADDITIONAL_ANNOTATION_KEY
         if annotation is not None:
             full_annotation += annotation
         dataset.add_metadata(_ANNOTATION_KEY, annotation)
