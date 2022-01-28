@@ -2,6 +2,7 @@ from qcodes import Station, Parameter, Instrument
 from qcodes.utils.metadata import Metadatable
 from collections.abc import Sequence
 from typing import Any, Union
+from warnings import warn
 
 
 class DynamicStation(Station):
@@ -59,11 +60,12 @@ class DynamicStation(Station):
             ] and component not in [c.name for c in components_to_ensure]:
                 must_remove_components.append(component)
             elif component not in [c.name for c in components_to_ensure]:
-                raise Exception(
+                warn(
                     f"A component, {component}, exists in the qcodes.Station "
                     "which is not in the list of components used for "
                     "measurements, nor in the list of components NOT used for "
-                    "the measurement."
+                    "the measurement. Consider adding this component to one of "
+                    "the possible DynamicStation configurations."
                 )
         for component in must_remove_components:
             self.remove_component(component)
