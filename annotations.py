@@ -13,7 +13,7 @@ def annotate_runs(
     run_ids: Union[int, Sequence[int]],
     annotation: Optional[str] = None,
     error_state: Optional[bool] = None,
-    other_metadata: Optional[dict[Any]] = None,
+    other_metadata: Optional[dict[str, Any]] = None,
     flag_in_plottr: Optional[bool] = True,
 ) -> None:
     """Add annotation as metadata to a QCoDes measurement.
@@ -31,7 +31,7 @@ def annotate_runs(
     error_state (Optional[bool]): Whether or not the measurement should be
         flagged with a bool as containing error(s). Stored in dataset's
         metadata under the key 'errors_in_measurement'.
-    other_metadata (Optional[dict[Any]]): Dictionary of other metadata to add
+    other_metadata (Optional[dict[str,Any]]): Dictionary of other metadata to add
         or update in the dataset.
     flag_in_plottr (bool), default = True: Whether or not to flag measurements
         with a 'cross' in plottr-inspectr if they have error_state = True.
@@ -55,7 +55,7 @@ def append_annotation(
     run_ids: Union[int, Sequence[int]],
     annotation: Optional[str] = None,
     error_state: Optional[bool] = None,
-    other_metadata: Optional[dict[Any]] = None,
+    other_metadata: Optional[dict[str, Any]] = None,
     flag_in_plottr: Optional[bool] = True,
 ) -> None:
     """Append annotations to QCoDes measurements without overwriting.

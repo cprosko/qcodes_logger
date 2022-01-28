@@ -22,14 +22,14 @@ class DynamicStation(Station):
     def __init__(
         self,
         *components: Metadatable,
-        component_configurations: dict[Union[Parameter, Instrument]] = None,
+        component_configurations: dict[str, Union[Parameter, Instrument]] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(*components, **kwargs)
         self.set_component_configurations(component_configurations)
 
     def set_component_configurations(
-        self, component_configurations: dict[Union[Parameter, Instrument]]
+        self, component_configurations: dict[str, Union[Parameter, Instrument]]
     ) -> None:
         # TODO: Implement a validator of some sort for this function
         self._component_configurations = component_configurations
