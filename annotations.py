@@ -1,6 +1,6 @@
 from qcodes import load_by_id
 from collections.abc import Sequence
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
 _ANNOTATION_KEY = "post_measurement_annotation"
 _ERROR_KEY = "errors_in_measurement"
@@ -10,7 +10,7 @@ _ADDITIONAL_ANNOTATION_KEY = "\nADDITIONAL ANNOTATION: \n"
 
 
 def annotate_runs(
-    run_ids: int | Sequence[int],
+    run_ids: Union[int, Sequence[int]],
     annotation: Optional[str] = None,
     error_state: Optional[bool] = None,
     other_metadata: Optional[dict[Any]] = None,
@@ -52,7 +52,7 @@ def annotate_runs(
 
 
 def append_annotation(
-    run_ids: int | Sequence[int],
+    run_ids: Union[int, Sequence[int]],
     annotation: Optional[str] = None,
     error_state: Optional[bool] = None,
     other_metadata: Optional[dict[Any]] = None,
