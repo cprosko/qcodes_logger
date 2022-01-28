@@ -38,7 +38,7 @@ class DynamicStation(Station):
     def adjust_station_to_meas_setup(
         self, config: Sequence[str], verbose: bool = True
     ) -> None:
-        configs = self.component_configurations
+        configs = self._component_configurations
         components_to_ensure = sum([configs[k] for k in config], [])
         components_to_remove = set(
             sum([configs[k] for k in configs.keys() if k not in config], [])
