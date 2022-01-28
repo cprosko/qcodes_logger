@@ -6,6 +6,8 @@ _ANNOTATION_KEY = "post_measurement_annotation"
 _ERROR_KEY = "errors_in_measurement"
 _PLOTTR_KEY = "inspectr_tag"
 _CROSS_KEY = "cross"
+_STAR_KEY = "star"
+_NULL_KEY = ""
 _ADDITIONAL_ANNOTATION_KEY = "\nADDITIONAL ANNOTATION: \n"
 
 
@@ -39,16 +41,19 @@ def annotate_runs(
     if isinstance(run_ids, int):
         run_ids = (run_ids,)
     for run_id in run_ids:
-        dataset = load_by_id(run_id)
+        data = load_by_id(run_id)
         if annotation is not None:
-            dataset.add_metadata(_ANNOTATION_KEY, annotation)
+            data.add_metadata(_ANNOTATION_KEY, annotation)
         if error_state is not None:
-            dataset.add_metadata("errors_in_measurement", error_state)
-            if flag_in_plottr and error_state is True:
-                dataset.add_metadata(_PLOTTR_KEY, _CROSS_KEY)
+            data.add_metadata("errors_in_measurement", error_state)
+            if flag_in_plottr:
+                if error_state is True:
+                    data.add_metadata(_PLOTTR_KEY, _CROSS_KEY)
+                elif error_state is False and data.metadata[_PLOTTR_KEY] != _STAR_KEY:
+                    data.add_metadata(_PLOTTR_KEY, _NULL_KEY)
         if other_metadata is not None:
             for k, v in other_metadata.items():
-                dataset.add_metadata(k, v)
+                data.add_metadata(k, v)
 
 
 def append_annotation(
