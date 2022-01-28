@@ -26,6 +26,7 @@ class DynamicStation(Station):
         **kwargs: Any,
     ) -> None:
         super().__init__(*components, **kwargs)
+        self._component_configurations = dict()
         self.set_component_configurations(component_configurations)
 
     def set_component_configurations(
